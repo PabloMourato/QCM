@@ -1,41 +1,92 @@
+package Projet;
+
+
 import java.util.ArrayList;
-import java.util.Scanner;
+
+public abstract class Questionnaire {
+public String nom;
+public ArrayList<Question> questions;
+public ArrayList<Reponse> reponses;
+private Question Q;
+private Reponse R;
+
+//création du nom du questionnaire 
+public Questionnaire(String nom) {
+	this.nom=nom;
+}
+
+/*
+Constructeur avec source pour la  BD via JDBC  
+
+public Questionnaire() {//pas sur 
+  source = new SourceJdbc();  
+  init();
+  }  
+
+ methode pour constructeurs : recuperation des questions-reponses depuis la bdd */
+//private void init() {  
 
 
 
-public class Questionnaire {
-	private String nom;
-	private ArrayList list_questions= new ArrayList<Question>();
-	public int rng =(int) (Math.random()*4+1);
+
+
+//création des getters et setters 
+public String getNom() {
+	return nom;
+}
+public void setNom(String nom) {
+	this.nom = nom;
+}
+public ArrayList<Question> getQuestions() {
+	return questions;
+}
+public void setQuestions(ArrayList<Question> questions) {
+	this.questions = questions;
+}
+
+//on ajoute des QUESTIONS au questionnaire 
+public void addQuestions(Question question) {
+	questions.add(question);
+}
 	
-	
-	public Questionnaire(){
-		
-	}
-	public String GetNom() {
-		return nom;
-	}
-	
+//afficher question suivante , l'acces se fait de maniere aléatoire 
+public void questionSuivante() {
+int nb = questions.size();
+ if (nb > 0) {
+  int index = (int)(Math.random()* (questions.size()-1));
+  Q = (Question)questions.get(index);//elementAt
+  R = (Reponse)reponses.get(index);
+ // suppression des questions deja selectionnees et pretes a poser ainsi que les reponses correspondantes
+  questions.remove(index);
+  reponses.remove(index);
+  
+ }
+} 
 
-	
-	
-	
+public int nombreDeQuestions() {
+    return questions.size();
+}
+/**
+renvoit la question 
+*/
+public Question getQuestion() {
+    return Q;
+}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
-		Scanner sc1 = new Scanner(System.in);
-		
-		System.out.println("Veuillez choisir un theme : ");
-		String s = sc.next();
-		System.out.println("Veuillez choisir une difficulte : ");
-		String s1 = sc1.next();
-		
-		for(int i=0;i<10;i++) {
-			
 
-		}
-		;
-	}
+/**
+renvoit la reponse 
+*/
+public Reponse getReponse() {
+    return R;
+}
 
+//renvoit vrai si le questionnaire est vide, c'est a dire s'il n'y a plus de questions
+
+public boolean isEmpty() {
+ return (reponses.size()==0) ;
+}
+// pour le timer il faut le faire en swing 
+
+public abstract void choisir_Question();
 }
